@@ -1,6 +1,6 @@
 // preprocessor directives: define constants (including pins) in the code
 #define FLASH_RATE_HZ 2 //delay time = 1/(2 Hz) = 0.5 s = 500 ms 
-#define BUTTON_IN 1
+#define BUTTON_IN 3
 #define PWM_LED_OUT 11
 #define PWM_MAX 255
 
@@ -15,7 +15,7 @@ int delay_time = 1000 / FLASH_RATE_HZ;
 // setup loop: setup code executed one-time at device startup
 void setup() {
 
-  attachInterrupt(BUTTON_IN, button_pushed, FALLING); //FALLING = when pin goes from high to low 
+  attachInterrupt(digitalPinToInterrupt(BUTTON_IN), button_pushed, FALLING); //FALLING = when pin goes from high to low 
   
 }
 
@@ -49,14 +49,18 @@ void set_pwm_based_on_operating_mode(){
     switch (operating_mode) {
         case 0:
             PWM_OUT = 0;
+            break;
         case 1:
             PWM_OUT = PWM_MAX;
+            break;
         case 2:
             PWM_OUT = int(PWM_MAX/2);
+            break;
         case 3:
             PWM_OUT = int(PWM_MAX/4);
+            break;
         case 4:
-            flash_the_light();
+           flash_the_light();
     }
   
 }
