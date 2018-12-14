@@ -14,8 +14,8 @@ int delay_time = 1000 / FLASH_RATE_HZ;
 
 // setup loop: setup code executed one-time at device startup
 void setup() {
-
-  attachInterrupt(digitalPinToInterrupt(BUTTON_IN), button_pushed, FALLING); //FALLING = when pin goes from high to low 
+  Serial.begin(9600);
+  attachInterrupt(digitalPinToInterrupt(BUTTON_IN), button_pushed, RISING); //FALLING 
   
 }
 
@@ -35,12 +35,17 @@ void button_pushed() {
 }
 
 void check_for_button_press() {
-    if (BUTTON_PUSHED == true) {
-        operating_mode = operating_mode + 1;
-        if (operating_mode == 5) {
-            operating_mode = 0;
-        }
-     }
+  
+    if ((BUTTON_PUSHED) && (previous_button_state !=4)) {
+      operating_mode =operating_mode + 1;
+      BUTTON_PUSHED = false;
+    }
+    else if ((BUTTON_PUSHED) && (previous_button_state ==4)) {
+      operating_mode = 0;
+      BUTTON_PUSHED = false;
+    }
+    previous_button_state = operating_mode;
+    Serial.print(previous_button_state);
 }
 
 
